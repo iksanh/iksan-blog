@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./footer.style.scss";
-import Logo from "../../img/Logo.png";
+import Logo from "../../img/logo.png";
 
 const Footer = (props) => {
   return (
