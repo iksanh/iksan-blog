@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -10,6 +11,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
+
     children: [
       {
         path: "/",
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
       },
       {
         path: "/write",
+        element: <Write />,
+      },
+      {
+        path: "/write/:id",
         element: <Write />,
       },
     ],
@@ -39,7 +45,9 @@ function App() {
   return (
     <div className="app">
       <div className="container">
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </div>
     </div>
   );

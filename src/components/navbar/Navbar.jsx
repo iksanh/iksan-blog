@@ -1,10 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./navbar.style.scss";
 import Logo from "../../img/logo.png";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 const Navbar = (props) => {
+  const { user, logoutUser, isToken } = useAuthContext();
+  const navigate = useNavigate();
+
   return (
     <div className="navbar">
       <div className="container">
@@ -30,10 +34,17 @@ const Navbar = (props) => {
             <h6>DESAIGN</h6>
           </Link>
           <Link className="link" to="/?cat=food">
-            <h6>FOOD</h6>
+            <h6>FOOD </h6>
           </Link>
-          <span>Iksan</span>
-          <span>Logout</span>
+          {isToken ? (
+            <>
+              <span>{user.username}</span>
+              <span onClick={() => logoutUser()}>Logout</span>
+            </>
+          ) : (
+            <span onClick={() => navigate("/login")}>Login</span>
+          )}
+
           <Link className="write" to="/write">
             <h6>write</h6>
           </Link>
