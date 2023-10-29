@@ -59,7 +59,7 @@ const AuthProvider = ({ children }) => {
 
   const updateToken = async () => {
     try {
-      let response = await fetch("http://127.0.0.1:8000/token/refresh", {
+      const response = await fetch("http://127.0.0.1:8000/token/refresh", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,11 +68,15 @@ const AuthProvider = ({ children }) => {
       });
 
       let data = await response.json();
+
       if (response.status == 200) {
         setAuthTokens(data);
         setUser(jwt_decode(data.access));
         localStorage.setItem("authTokens", JSON.stringify(data));
         setIsToken(true);
+      } else if (response.status == 401) {
+        console.log(data);
+        setIsToken(false);
       } else {
         setIsToken(false);
       }
@@ -81,7 +85,7 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
       }
     } catch (error) {
-      throw new Error(error);
+      console.log("Network Error : ", error);
     }
   };
   let contextData = {

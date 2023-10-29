@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import Post from "../components/post/Post";
 import "./home.style.scss";
@@ -33,11 +34,16 @@ import { getPosts } from "../services/apiPosts";
 
 const Home = (props) => {
   const [posts, setPosts] = useState([]);
+  // const [searchCategoryParam, setCategorySearchParam] = useSearchParams();
+
+  // const category = searchCategoryParam.get("cat");
+  const category = useLocation().search;
+
   useEffect(() => {
-    getPosts()
+    getPosts(category)
       .then((data) => setPosts(data))
-      .catch((e) => console.log(e.message));
-  }, []);
+      .catch((e) => console.log(e));
+  }, [category]);
 
   return (
     <div className="home">

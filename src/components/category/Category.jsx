@@ -1,18 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getCategory } from "../../services/apiCategory";
 
-const Category = ({ id, name, handleChange }) => {
+const Category = ({ handleChange, categoryId }) => {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    getCategory().then((category) => setCategories(category));
+  }, []);
   return (
-    <div className="cat">
-      <input
-        type="radio"
-        name="category_id"
-        value={id}
-        id={id}
-        onChange={handleChange}
-      />
-      <label htmlFor="art">{name.toUpperCase()}</label>
-    </div>
+    <>
+      {categories.map(({ id, name }) => (
+        <div className="cat" key={id}>
+          <input
+            checked={id === categoryId}
+            type="radio"
+            name="category_id"
+            value={id}
+            id={id}
+            onChange={() => handleChange(id)}
+          />
+          <label htmlFor="art">{name.toUpperCase()}</label>
+        </div>
+      ))}
+    </>
   );
 };
 

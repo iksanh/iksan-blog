@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const APIURL = "http://127.0.0.1:8000/api/posts";
+const APIURL = "http://127.0.0.1:8000/api/posts/";
 
-export const getPosts = async () => {
+export const getPosts = async (url) => {
   try {
-    let { data } = await axios.get(APIURL);
+    let { data } = await axios.get(`http://127.0.0.1:8000/api/posts/${url}`);
     return data;
   } catch (error) {
     throw new Error("Post Not Found");
@@ -15,7 +15,7 @@ export const createPosts = (posts) => {
   const { authTokens, ...data } = posts;
   console.log(data);
   axios
-    .post("http://127.0.0.1:8000/api/posts", data, {
+    .post(APIURL, data, {
       headers: {
         "content-type": "multipart/form-data",
         Authorization: "Bearer " + authTokens,
@@ -47,7 +47,7 @@ export const updatePost = (post, id) => {
 
 export const getPost = async (postId) => {
   try {
-    const { data } = await axios.get(`${APIURL}/${postId}`);
+    const { data } = await axios.get(`${APIURL}${postId}`);
     return data;
     // console.log(postData);
   } catch (error) {

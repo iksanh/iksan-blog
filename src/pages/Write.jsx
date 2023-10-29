@@ -13,7 +13,7 @@ const Write = (props) => {
   const { id } = useParams();
   const { isToken, user, authTokens } = useAuthContext();
   const navigate = useNavigate();
-  const [category, setCategory] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryID] = useState(null);
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
@@ -37,15 +37,17 @@ const Write = (props) => {
     }
   };
 
+  const updateCategory = (idCategory) => {
+    setCategoryID(idCategory);
+  };
   useEffect(() => {
     if (!isToken) navigate("/login");
-    getCategory().then((cat) => setCategory(cat));
 
     if (id) {
-      getPost(id).then(({ title, desc, category }) => {
+      getPost(id).then(({ title, desc, category: categoryIdApi }) => {
         setTitle(title);
         setValue(desc);
-        setCategoryID(category);
+        setCategoryID(categoryIdApi);
         // console.log(title, desc, category);
       });
     } else {
@@ -101,36 +103,8 @@ const Write = (props) => {
         </div>
         <div className="item">
           <h1>Category</h1>
-          {category.map((cat) => (
-            <Category
-              id={cat.id}
-              name={cat.name}
-              key={cat.id}
-              handleChange={(e) => setCategoryID(e.target.value)}
-              category_id={categoryId}
-            />
-          ))}
-          {/* <Category category={category} /> */}
-          {/* <div className="cat">
-            <input type="radio" name="cat" value="art" id="art" />
-            <label htmlFor="art">Art</label>
-          </div>
-          <div className="cat">
-            <input type="radio" name="cat" value="science" id="art" />
-            <label htmlFor="art">Science</label>
-          </div>
-          <div className="cat">
-            <input type="radio" name="cat" value="technology" id="art" />
-            <label htmlFor="art">Technology</label>
-          </div>
-          <div className="cat">
-            <input type="radio" name="cat" value="cinema" id="art" />
-            <label htmlFor="art">Cinema</label>
-          </div>
-          <div className="cat">
-            <input type="radio" name="cat" value="desaign" id="art" />
-            <label htmlFor="art">Desaign</label>
-          </div> */}
+
+          <Category handleChange={updateCategory} categoryId={categoryId} />
         </div>
       </div>
     </div>

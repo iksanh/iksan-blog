@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
+import { deletePost, getPost } from "../services/apiPosts";
+import { useAuthContext } from "../contexts/AuthContext";
+import { getText } from "../utils/text";
 
 import Menu from "../components/menu/Menu";
 import Edit from "../img/edit.png";
 import Delete from "../img/delete.png";
 
 import "./single.style.scss";
-import { deletePost, getPost } from "../services/apiPosts";
-import { useAuthContext } from "../contexts/AuthContext";
-import { getText } from "../utils/text";
 
 const Single = (props) => {
   const { id } = useParams();
@@ -21,7 +21,7 @@ const Single = (props) => {
 
   const handleDelete = () => {
     deletePost(id, authTokens);
-    navigate("/");
+    navigate(0);
   };
   useEffect(() => {
     getPost(id)
@@ -31,7 +31,7 @@ const Single = (props) => {
       .catch((err) => {
         console.log(err.message);
       });
-  }, []);
+  }, [id]);
 
   return (
     <div className="single">
